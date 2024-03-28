@@ -17,7 +17,7 @@ const Login = () => {
       <div className={styles.rightSection}>
         <Image
           className={styles.image}
-          src="/image1.jpg"
+          src="/login.jpg"
           width={500}
           height={500}
           alt="Picture of the author"

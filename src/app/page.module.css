@@ -1,34 +1,25 @@
 .main {
   display: flex;
   height: 100vh;
-  /* Equivalent to h-screen in Tailwind */
 }
 
 .leftSection {
   width: 33.33%;
-  /* Equivalent to w-1/3 in Tailwind */
   display: flex;
   justify-content: center;
-  /* Equivalent to justify-center in Tailwind */
   align-items: center;
-  /* Equivalent to items-center in Tailwind */
 }
 
 .rightSection {
   width: 66.67%;
-  /* Equivalent to w-2/3 in Tailwind */
   background-color: #0f0f16;
-  /* Equivalent to bg-[#0f0f16] in Tailwind */
   display: flex;
   justify-content: center;
-  /* Equivalent to justify-center in Tailwind */
   align-items: center;
-  /* Equivalent to items-center in Tailwind */
 }
 
 .image {
-  width: 25%;
-  /* Equivalent to w-1/4 in Tailwind */
-  object-fit: contain;
-  /* Equivalent to object-contain in Tailwind */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
