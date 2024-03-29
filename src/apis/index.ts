@@ -52,10 +52,12 @@ const deleteRequest = async (path: string): Promise<any> => {
   }
 };
 
-const auth = {
-  login: (payload: any) => postRequest('/auth/login', payload),
-  signup: (payload: any) => postRequest('/users/signUp', payload),
-  verify: (payload: any) => getRequest(`/users/emailVerification?tokens=${payload}`),
+export const auth = {
+  login: (payload: any) => postRequest('/auth/login', payload)
+}
+
+export const product = {
+  getAllProducts: () => getRequest('/products'),
 };
 
-export default auth;
+

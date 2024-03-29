@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import auth from '@/apis';
+import { auth } from '@/apis';
 import http from '@/services/http';
 import LoadingButton from '@mui/lab/LoadingButton';
 
@@ -71,7 +71,6 @@ const LoginForm = () => {
 
         auth.login(userData)
             .then((res: any) => {
-                console.log("res", res)
                 if (res.error) {
                     setError(res.error);
                     setIsLoading(false)

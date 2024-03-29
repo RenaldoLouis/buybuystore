@@ -23,11 +23,10 @@ const Navbar = () => {
     };
 
     const handleClickSidebar = (path: any) => {
-        console.log("handleClickSidebar", path)
         setOpen(false);
         setTimeout(() => {
             router.push(`/${path.toLowerCase()}`)
-        }, 300);
+        }, 150);
     }
 
     const handleLogout = () => {
