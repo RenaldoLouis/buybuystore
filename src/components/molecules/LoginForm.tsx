@@ -13,6 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import auth from '@/apis';
 import http from '@/services/http';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 const LoginForm = () => {
     const router = useRouter();
@@ -21,12 +22,13 @@ const LoginForm = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
     const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const token = http.getAuthToken();
 
         if (token) {
-            router.push("/home");
+            router.push("/products");
         }
     }, [router])
 
@@ -59,6 +61,7 @@ const LoginForm = () => {
         setError("");
     }
     const handleSubmit = async (e: any) => {
+        setIsLoading(true)
         setError("")
         e.preventDefault();
         let userData = {
@@ -71,12 +74,14 @@ const LoginForm = () => {
                 console.log("res", res)
                 if (res.error) {
                     setError(res.error);
+                    setIsLoading(false)
                 }
                 else {
                     http.setAuthToken(res.data.token)
                     setOpenSnackbar(true);
                     clearInputs();
-                    router.push("/home");
+                    router.push("/products");
+                    setIsLoading(false)
                 }
             })
             .catch(e => console.error(e))
@@ -92,7 +97,9 @@ const LoginForm = () => {
             <TextField
                 required
                 className={commonStyles.marginTop30} id="outlined-basic" label="Password" variant="outlined" value={password} onChange={handlePasswordChange} />
-            <Button className={commonStyles.marginTop30} type="submit" variant="contained">Login</Button>
+            <LoadingButton className={commonStyles.marginTop30} type="submit" variant="contained" loading={isLoading}>
+                Login
+            </LoadingButton>
             <Snackbar
                 open={openSnackbar}
                 autoHideDuration={6000}

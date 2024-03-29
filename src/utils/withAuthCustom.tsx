@@ -5,15 +5,15 @@ import { redirect } from 'next/navigation'
 
 const withAuthCustom = (WrappedComponent: React.ComponentType) => {
     const Wrapper: React.FC = (props) => {
-        // const router = useRouter();
+        const router = useRouter();
 
         useEffect(() => {
-            const isAuthenticated = http.getAuthToken(); // Implement your authentication logic
+            const isAuthenticated = http.getAuthToken();
             if (!isAuthenticated) {
-                // router.push('/'); // Redirect to login page if not authenticated
-                redirect('/'); // Redirect to login page if not authenticated
+                router.push('/'); // Redirect to login page if not authenticated
+                // redirect('/');
             }
-        }, []);
+        }, [router]);
 
         return <WrappedComponent {...props} />;
     };
