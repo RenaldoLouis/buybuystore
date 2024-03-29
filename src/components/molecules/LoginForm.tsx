@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { signIn } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 import styles from "@/styles/loginform.module.css";
-import commmonStyles from "../../styles/common.module.css"
+import commonStyles from "@/styles/common.module.css"
 
 // MUI IMPORT
 import TextField from '@mui/material/TextField';
@@ -91,8 +91,8 @@ const LoginForm = () => {
                 id="outlined-basic" label="Email" variant="outlined" value={email} onChange={handleEmailChange} />
             <TextField
                 required
-                className={commmonStyles.marginTop30} id="outlined-basic" label="Password" variant="outlined" value={password} onChange={handlePasswordChange} />
-            <Button className={commmonStyles.marginTop30} type="submit" variant="contained">Login</Button>
+                className={commonStyles.marginTop30} id="outlined-basic" label="Password" variant="outlined" value={password} onChange={handlePasswordChange} />
+            <Button className={commonStyles.marginTop30} type="submit" variant="contained">Login</Button>
             <Snackbar
                 open={openSnackbar}
                 autoHideDuration={6000}
