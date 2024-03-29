@@ -70,8 +70,6 @@ class HTTPService {
     this.axiosInstance = instance;
   }
 
-  // TODO: check if we can use this out of the box, if not use the utils
-  // https://github.com/axios/axios#request-config
   get(urlPath: string, params: Record<string, any> | null = null) {
     if (params) {
       return this.axiosInstance?.get(urlPath, { params });

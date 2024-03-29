@@ -1,5 +1,5 @@
 "use client"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { signIn } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 import styles from "@/styles/loginform.module.css";
@@ -11,6 +11,8 @@ import Button from '@mui/material/Button';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import auth from '@/apis';
+import http from '@/services/http';
 
 const LoginForm = () => {
     const router = useRouter();
@@ -18,25 +20,26 @@ const LoginForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [open, setOpen] = useState(false);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
-    const handleClick = () => {
-        setOpen(true);
-    };
+    useEffect(() => {
+        const token = http.getAuthToken();
+
+        if (token) {
+            router.push("/home");
+        }
+    }, [router])
 
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
         }
 
-        setOpen(false);
+        setOpenSnackbar(false);
     };
 
     const action = (
         <>
-            <Button color="secondary" size="small" onClick={handleClose}>
-                UNDO
-            </Button>
             <IconButton
                 size="small"
                 aria-label="close"
@@ -56,18 +59,22 @@ const LoginForm = () => {
         setError("");
     }
     const handleSubmit = async (e: any) => {
+        setError("")
         e.preventDefault();
-        signIn("credentials", {
-            email,
-            password,
-            redirect: false
-        })
+        let userData = {
+            username: email,
+            password: password
+        }
+
+        auth.login(userData)
             .then((res: any) => {
+                console.log("res", res)
                 if (res.error) {
-                    setError(JSON.parse(res.error).message);
+                    setError(res.error);
                 }
                 else {
-                    setOpen(true);
+                    http.setAuthToken(res.data.token)
+                    setOpenSnackbar(true);
                     clearInputs();
                     router.push("/home");
                 }
@@ -79,15 +86,18 @@ const LoginForm = () => {
         <form
             onSubmit={handleSubmit}
             className={styles.container}>
-            <TextField id="outlined-basic" label="Email" variant="outlined" onChange={handleEmailChange} />
-            <TextField className={commmonStyles.marginTop30} id="outlined-basic" label="Password" variant="outlined" onChange={handlePasswordChange} />
+            <TextField
+                required
+                id="outlined-basic" label="Email" variant="outlined" value={email} onChange={handleEmailChange} />
+            <TextField
+                required
+                className={commmonStyles.marginTop30} id="outlined-basic" label="Password" variant="outlined" value={password} onChange={handlePasswordChange} />
             <Button className={commmonStyles.marginTop30} type="submit" variant="contained">Login</Button>
-            {/* <Button onClick={handleClick}>Open Snackbar</Button> */}
             <Snackbar
-                open={open}
+                open={openSnackbar}
                 autoHideDuration={6000}
                 onClose={handleClose}
-                message="Note archived"
+                message="Login Success"
                 action={action}
             />
             {error &&

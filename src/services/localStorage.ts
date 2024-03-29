@@ -1,11 +1,20 @@
 const serviceGenerator = (lsKey: string) => ({
-  get: () => localStorage.getItem(lsKey),
-  set: (value: string) => {
-    localStorage.setItem(lsKey, value);
+  get: () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem(lsKey);
+    }
+    return null; // Or handle the case where localStorage is not available
   },
-  delete: () => localStorage.removeItem(lsKey),
+  set: (value: string) => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(lsKey, value);
+    }
+  },
+  delete: () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(lsKey);
+    }
+  },
 });
 
 export const localStorageAuthToken = serviceGenerator("buybuystore");
-
-export const localStorageSiteLang = serviceGenerator("buybuystore");

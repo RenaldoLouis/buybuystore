@@ -5,13 +5,12 @@ interface ErrorResponse {
 }
 
 const handleErrors = (err: any /* path: string, payload: any */): ErrorResponse => {
-  const errorMessageKey = err.response?.data?.error?.Message;
+  const errorMessageKey = err.response?.data;
   return { error: errorMessageKey };
 };
 
 const getRequest = async (path: string, payload?: any): Promise<any> => {
   try {
-    console.log("path", path);
     const res = await http.get(path, payload);
     return res;
   } catch (err) {
@@ -54,9 +53,9 @@ const deleteRequest = async (path: string): Promise<any> => {
 };
 
 const auth = {
-  login: (payload: any) => postRequest('/users/login', payload),
+  login: (payload: any) => postRequest('/auth/login', payload),
   signup: (payload: any) => postRequest('/users/signUp', payload),
   verify: (payload: any) => getRequest(`/users/emailVerification?tokens=${payload}`),
 };
 
-export default { auth };
+export default auth;
