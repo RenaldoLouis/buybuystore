@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import styles from "@/styles/home.module.css";
 import commonStyles from "@/styles/common.module.css"
 import withAuthCustom from "@/utils/withAuthCustom";
+import "../app/globals.css";
 
 
 import AppBar from '@mui/material/AppBar';
@@ -14,8 +15,17 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
+import { useRouter } from "next/router";
+import http from "@/services/http";
 
 const Home = () => {
+    const router = useRouter()
+
+    const handleLogout = () => {
+        http.clearAuthToken()
+        router.push('/')
+    }
+
     return (
         <main
             className={styles.main}
@@ -36,7 +46,7 @@ const Home = () => {
                             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                                 News
                             </Typography>
-                            <Button color="inherit">Login</Button>
+                            <Button onClick={handleLogout} color="inherit">Logout</Button>
                         </Toolbar>
                     </AppBar>
                 </Box>
