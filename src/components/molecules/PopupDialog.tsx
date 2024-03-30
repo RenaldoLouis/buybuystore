@@ -62,8 +62,8 @@ const PopupDialog = (props: { handleClose: any; open: any; data: any; }) => {
                     ref={descriptionElementRef}
                     tabIndex={-1}
                 >
-                    {data.map((eachData) => (
-                        <ProductCard data={eachData} isAbleToDelete={false} handleDelete={undefined} />
+                    {data.map((eachData: any, index: React.Key | null | undefined) => (
+                        <ProductCard key={index} data={eachData} isAbleToDelete={false} handleDelete={undefined} />
                     ))}
                 </DialogContentText>
             </DialogContent>

@@ -11,6 +11,7 @@ import LayoutHome from "@/components/atom/layout";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import PopupDialog from "@/components/molecules/PopupDialog";
+import moment from "moment";
 
 const CartTable = (props: { data: any, productsData: any }) => {
     const { data, productsData } = props
@@ -34,7 +35,6 @@ const CartTable = (props: { data: any, productsData: any }) => {
             let tempData = productsData.filter((product: { id: any; }) => product.id === eachData.productId)
             newTempProductData.push(tempData[0]);
         })
-        console.log("newTempProductData", newTempProductData)
         setCardData(newTempProductData)
     }
 
@@ -44,10 +44,6 @@ const CartTable = (props: { data: any, productsData: any }) => {
         }
     }, [cardData])
 
-    const handleOpenDetail = () => {
-        console.log("handleOpenDetail", handleOpenDetail)
-    }
-
     const handleClose = () => {
         setOpenModal(false);
         setCardData([]);
@@ -55,7 +51,11 @@ const CartTable = (props: { data: any, productsData: any }) => {
 
     const columnsTable: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 70 },
-        { field: 'date', headerName: 'Date', width: 230 },
+        {
+            field: 'date', headerName: 'Date', width: 230,
+            valueGetter: (value, row) => moment(row.date).format("HH-MM-YYYY hh:mm"),
+
+        },
         { field: 'userId', headerName: 'userId', width: 250, },
         {
             field: 'action', headerName: 'Action', width: 330,
