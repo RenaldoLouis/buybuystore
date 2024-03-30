@@ -10,6 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import DialogContentText from '@mui/material/DialogContentText';
+import ProductCard from "./ProductCard";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -61,14 +62,9 @@ const PopupDialog = (props: { handleClose: any; open: any; data: any; }) => {
                     ref={descriptionElementRef}
                     tabIndex={-1}
                 >
-                    {[...new Array(50)]
-                        .map(
-                            () => `Cras mattis consectetur purus sit amet fermentum.
-Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
-                        )
-                        .join('\n')}
+                    {data.map((eachData) => (
+                        <ProductCard data={eachData} isAbleToDelete={false} handleDelete={undefined} />
+                    ))}
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

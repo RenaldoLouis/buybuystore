@@ -16,10 +16,11 @@ const CartTable = (props: { data: any, productsData: any }) => {
     const { data, productsData } = props
 
     const [rowsTable, setRowsTable] = useState([]);
-    const [openModal, setOpenModal] = useState(false)
+    const [openModal, setOpenModal] = useState(false);
+    const [cardData, setCardData] = useState([]);
+    // const [selectedTableData, setSelectedTableData] = useState(null);
 
-    console.log("data", data)
-    console.log("productsData", productsData)
+    // console.log("data", data)
 
     useEffect(() => {
         if (data) {
@@ -27,12 +28,29 @@ const CartTable = (props: { data: any, productsData: any }) => {
         }
     }, [data])
 
+    const handleOpenDialogWithData = (selectedData: any) => {
+        let newTempProductData: any[] | ((prevState: never[]) => never[]) = []
+        selectedData.products.forEach((eachData: { productId: any; }) => {
+            let tempData = productsData.filter((product: { id: any; }) => product.id === eachData.productId)
+            newTempProductData.push(tempData[0]);
+        })
+        console.log("newTempProductData", newTempProductData)
+        setCardData(newTempProductData)
+    }
+
+    useEffect(() => {
+        if (cardData.length > 0) {
+            setOpenModal(true);
+        }
+    }, [cardData])
+
     const handleOpenDetail = () => {
         console.log("handleOpenDetail", handleOpenDetail)
     }
 
     const handleClose = () => {
         setOpenModal(false);
+        setCardData([]);
     };
 
     const columnsTable: GridColDef[] = [
@@ -43,12 +61,12 @@ const CartTable = (props: { data: any, productsData: any }) => {
             field: 'action', headerName: 'Action', width: 330,
             renderCell: (params) => {
                 const handleClickOpen = () => {
-                    setOpenModal(true);
+                    handleOpenDialogWithData(params.row)
                 };
 
                 return (
                     <Button variant="outlined" onClick={handleClickOpen}>
-                        Open dialog
+                        Open Detail Product
                     </Button>
                 );
             },
@@ -69,7 +87,7 @@ const CartTable = (props: { data: any, productsData: any }) => {
                 pageSizeOptions={[5, 10]}
             />
 
-            <PopupDialog handleClose={handleClose} open={openModal} data={productsData} />
+            <PopupDialog handleClose={handleClose} open={openModal} data={cardData} />
         </div>
     )
 }

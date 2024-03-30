@@ -168,7 +168,7 @@ const Products = () => {
                                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                                     {showData.map((eachData: any, index) => (
                                         <Grid item xs={2} sm={4} md={4} mt={4} key={index}>
-                                            <ProductCard data={eachData} handleDelete={handleDelete} />
+                                            <ProductCard data={eachData} handleDelete={handleDelete} isAbleToDelete={true} />
                                         </Grid>
                                     ))}
                                 </Grid>

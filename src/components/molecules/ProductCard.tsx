@@ -19,8 +19,8 @@ import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-const ProductCard = (props: { data: any; handleDelete: any; }) => {
-    const { data, handleDelete } = props
+const ProductCard = (props: { data: any; handleDelete: any; isAbleToDelete: boolean; }) => {
+    const { data, handleDelete, isAbleToDelete } = props
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardMedia
@@ -38,7 +38,9 @@ const ProductCard = (props: { data: any; handleDelete: any; }) => {
             </CardContent>
             <CardActions>
                 <Button size="small">Add to cart</Button>
-                <Button size="small" onClick={() => handleDelete(data.id)}>Delete</Button>
+                {isAbleToDelete && (
+                    <Button size="small" onClick={() => handleDelete(data.id)}>Delete</Button>
+                )}
             </CardActions>
         </Card>
     )
