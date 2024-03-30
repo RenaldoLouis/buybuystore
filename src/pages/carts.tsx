@@ -10,15 +10,18 @@ import { cart, product } from "@/apis";
 import Button from '@mui/material/Button';
 import commonStyles from "@/styles/common.module.css";
 import { TuiDateRangePicker } from "nextjs-tui-date-range-picker";
+import moment from "moment";
 
 
 const Carts = () => {
     const [productsData, setProductsData] = useState([])
     const [cartsData, setCartsData] = useState([])
+    const [startDate, setStartDate] = useState(new Date('2020-01-01'))
+    const [endDate, setEndDate] = useState(new Date('2020-05-01'))
 
     const options = {
         language: 'en',
-        format: 'MM-dd YYYY',
+        format: 'd-MM-YYYY',
     };
 
     const getAllProducts = () => {
@@ -34,8 +37,16 @@ const Carts = () => {
         })
     }, [])
 
-    const handleChangeDate = () => {
+    const handleChangeDate = (date: any) => {
+        setStartDate(date[0])
+        setEndDate(date[1])
 
+        const selectedStartDate = moment(date[0]).format("YYYY-MM-DD")
+        const selectedEndDate = moment(date[1]).format("YYYY-MM-DD")
+
+        cart.getCartByDateRange(selectedStartDate, selectedEndDate).then((res) => {
+            setCartsData(res.data)
+        })
     }
 
     return (
@@ -48,14 +59,16 @@ const Carts = () => {
                         <Button className={commonStyles.marginY16} variant="contained">
                             Add Cart
                         </Button>
-                        <TuiDateRangePicker
-                            handleChange={handleChangeDate}
-                            options={options}
-                            inputWidth={80}
-                            containerWidth={200}
-                            startpickerDate={new Date('2023-01-02')}
-                            endpickerDate={new Date('2023-01-30')}
-                        />
+                        <div >
+                            <TuiDateRangePicker
+                                handleChange={(e) => handleChangeDate(e)}
+                                options={options}
+                                inputWidth={80}
+                                containerWidth={200}
+                                startpickerDate={startDate}
+                                endpickerDate={endDate}
+                            />
+                        </div>
                     </div>
                     <CartTable data={cartsData} productsData={productsData} />
                 </Suspense>

@@ -19,9 +19,6 @@ const CartTable = (props: { data: any, productsData: any }) => {
     const [rowsTable, setRowsTable] = useState([]);
     const [openModal, setOpenModal] = useState(false);
     const [cardData, setCardData] = useState([]);
-    // const [selectedTableData, setSelectedTableData] = useState(null);
-
-    // console.log("data", data)
 
     useEffect(() => {
         if (data) {
@@ -53,7 +50,7 @@ const CartTable = (props: { data: any, productsData: any }) => {
         { field: 'id', headerName: 'ID', width: 70 },
         {
             field: 'date', headerName: 'Date', width: 230,
-            valueGetter: (value, row) => moment(row.date).format("HH-MM-YYYY hh:mm"),
+            valueGetter: (value, row) => moment(row.date).format("DD-MM-YYYY hh:mm"),
 
         },
         { field: 'userId', headerName: 'userId', width: 250, },
