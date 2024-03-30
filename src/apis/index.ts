@@ -58,6 +58,11 @@ export const auth = {
 
 export const product = {
   getAllProducts: () => getRequest('/products'),
+  getProductByCategory: (category: string) => getRequest(`/products/category/${category}`),
+};
+
+export const categories = {
+  getAllCategories: () => getRequest('/products/categories'),
 };
 
 

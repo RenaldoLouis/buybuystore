@@ -8,7 +8,7 @@ import commonStyles from "@/styles/common.module.css";
 import withAuthCustom from "@/utils/withAuthCustom";
 import Navbar from "@/components/molecules/Navbar";
 import LayoutHome from "../components/atom/layout";
-import { product } from "@/apis";
+import { categories, product } from "@/apis";
 
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -30,8 +30,6 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
 const Products = () => {
-    const [defaultData, setDefaultData] = useState([])
-
     const [productsData, setProductsData] = useState([])
     const [showData, setShowData] = useState([])
     const [page, setPage] = useState(1);
@@ -42,16 +40,8 @@ const Products = () => {
 
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("");
 
-    useEffect(() => {
-        setIsLoading(true)
+    const getAllProducts = () => {
         product.getAllProducts().then((res: any) => {
-            console.log("res", res)
-            let uniqueCategories: any = [...new Set(res.data.map((product: any) => product.category))];
-            uniqueCategories.splice(0, 0, 'All');
-            setCategoryList(uniqueCategories)
-
-            setDefaultData(res.data)
-
             setProductsData(res.data)
 
             let tempCountPage = Math.ceil(res.data.length / 6);
@@ -61,18 +51,33 @@ const Products = () => {
 
             setIsLoading(false)
         })
+    }
+
+    useEffect(() => {
+        setIsLoading(true)
+        getAllProducts()
+    }, [])
+
+    useEffect(() => {
+        setIsLoading(true)
+        categories.getAllCategories().then((res: any) => {
+            let uniqueCategories = res.data;;
+            uniqueCategories.splice(0, 0, 'All');
+            setCategoryList(uniqueCategories)
+        })
     }, [])
 
     // To get new list productdata Based on the filter
     useEffect(() => {
         if (selectedCategoryFilter !== "" && selectedCategoryFilter !== "All") {
-            const filteredData = defaultData.filter((eachData: any) => eachData.category === selectedCategoryFilter)
-            setProductsData(filteredData)
+            product.getProductByCategory(selectedCategoryFilter).then((res: any) => {
+                setProductsData(res.data)
+            })
         } else if (selectedCategoryFilter === "All") {
             setPage(1);
-            setProductsData(defaultData)
+            getAllProducts()
         }
-    }, [defaultData, selectedCategoryFilter])
+    }, [selectedCategoryFilter])
 
     // To process what data to show and update pagination after get new filtered ProductsData
     useEffect(() => {
@@ -123,9 +128,9 @@ const Products = () => {
         let newShowData = tempDuplicate.filter((eachData: any) => eachData.id !== itemId)
         setShowData(newShowData)
 
-        let tempDuplicateDefaultData = [...defaultData]
-        let newDefaultData = tempDuplicateDefaultData.filter((eachData: any) => eachData.id !== itemId)
-        setDefaultData(newDefaultData)
+        let tempDuplicateProductsData = [...productsData]
+        let newProductData = tempDuplicateProductsData.filter((eachData: any) => eachData.id !== itemId)
+        setProductsData(newProductData)
 
         setOpenSnackbar(true);
     }
