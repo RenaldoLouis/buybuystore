@@ -14,3 +14,7 @@
 .pageContainer {
     padding: 16px;
 }
+
+.fullWidth {
+    width: 100%;
+}

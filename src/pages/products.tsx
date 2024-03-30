@@ -34,13 +34,16 @@ const Products = () => {
     const [page, setPage] = useState(1);
     const [countPage, setCountPage] = useState(0);
     const [categoryList, setCategoryList] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("");
 
     useEffect(() => {
+        setIsLoading(true)
         product.getAllProducts().then((res: any) => {
             console.log("res", res)
-            const uniqueCategories: any = [...new Set(res.data.map((product: any) => product.category))];
+            let uniqueCategories: any = [...new Set(res.data.map((product: any) => product.category))];
+            uniqueCategories.splice(0, 0, 'All');
             setCategoryList(uniqueCategories)
 
             setDefaultData(res.data)
@@ -49,28 +52,32 @@ const Products = () => {
 
             let tempCountPage = Math.ceil(res.data.length / 6);
             setCountPage(tempCountPage)
-            let firstSixData = res.data.slice(0, 5)
+            let firstSixData = res.data.slice(0, 6)
             setShowData(firstSixData)
+
+            setIsLoading(false)
         })
     }, [])
 
-    // TO get new list productdata Based on the filter
+    // To get new list productdata Based on the filter
     useEffect(() => {
-        if (selectedCategoryFilter !== "") {
-            console.log("selectedCategoryFilter", selectedCategoryFilter)
+        if (selectedCategoryFilter !== "" && selectedCategoryFilter !== "All") {
             const filteredData = defaultData.filter((eachData: any) => eachData.category === selectedCategoryFilter)
-            console.log('filteredData', filteredData)
             setProductsData(filteredData)
+        } else if (selectedCategoryFilter === "All") {
+            setPage(1);
+            setProductsData(defaultData)
         }
     }, [defaultData, selectedCategoryFilter])
 
-    // TO process after get new filtered ProductsData
+    // To process what data to show and update pagination after get new filtered ProductsData
     useEffect(() => {
         if (selectedCategoryFilter !== "") {
             let tempCountPage = Math.ceil(productsData.length / 6);
             setCountPage(tempCountPage)
-            let firstSixData = productsData.slice(0, 5)
+            let firstSixData = productsData.slice(0, 6)
             setShowData(firstSixData)
+            setIsLoading(false)
         }
     }, [productsData, selectedCategoryFilter])
 
@@ -105,39 +112,42 @@ const Products = () => {
                                 {categoryList.map((eachCategory) => (
                                     <MenuItem key={eachCategory} value={eachCategory}>{eachCategory}</MenuItem>
                                 ))}
-                                {/* <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem> */}
                             </Select>
                         </FormControl>
                     </Box>
                     <div >
                         <Box sx={{ flexGrow: 1 }}>
-                            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                {showData.map((eachData: any, index) => (
-                                    <Grid item xs={2} sm={4} md={4} mt={4} key={index}>
-                                        <Card sx={{ maxWidth: 345 }}>
-                                            <CardMedia
-                                                sx={{ height: 140 }}
-                                                image={eachData.image}
-                                                title={eachData.title}
-                                            />
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h5" component="div">
-                                                    {eachData.title}
-                                                </Typography>
-                                                <Typography variant="body2" color="text.secondary">
-                                                    {eachData.description}
-                                                </Typography>
-                                            </CardContent>
-                                            <CardActions>
-                                                <Button size="small">Add to cart</Button>
-                                                <Button size="small">Delete</Button>
-                                            </CardActions>
-                                        </Card>
-                                    </Grid>
-                                ))}
-                            </Grid>
+                            {isLoading ? (
+                                <div className={`${commonStyles.flexContentCenter} ${commonStyles.fullWidth}`} style={{ height: 300 }}>
+                                    Loading
+                                </div>
+                            ) : (
+                                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                                    {showData.map((eachData: any, index) => (
+                                        <Grid item xs={2} sm={4} md={4} mt={4} key={index}>
+                                            <Card sx={{ maxWidth: 345 }}>
+                                                <CardMedia
+                                                    sx={{ height: 140 }}
+                                                    image={eachData.image}
+                                                    title={eachData.title}
+                                                />
+                                                <CardContent>
+                                                    <Typography gutterBottom variant="h5" component="div">
+                                                        {eachData.title}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        {eachData.description}
+                                                    </Typography>
+                                                </CardContent>
+                                                <CardActions>
+                                                    <Button size="small">Add to cart</Button>
+                                                    <Button size="small">Delete</Button>
+                                                </CardActions>
+                                            </Card>
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                            )}
                         </Box>
                     </div>
                     <div className={`${commonStyles.flexContentCenter} ${commonStyles.marginTop16}`}>
