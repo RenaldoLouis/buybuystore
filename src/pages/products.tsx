@@ -25,6 +25,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Snackbar from '@mui/material/Snackbar';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Products = () => {
     const [defaultData, setDefaultData] = useState([])
@@ -35,6 +38,7 @@ const Products = () => {
     const [countPage, setCountPage] = useState(0);
     const [categoryList, setCategoryList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState("");
 
@@ -89,9 +93,42 @@ const Products = () => {
         setShowData(newData)
     };
 
+    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenSnackbar(false);
+    };
+
+    const action = (
+        <>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleClose}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </>
+    );
+
     const handleChange = (event: SelectChangeEvent) => {
         setSelectedCategoryFilter(event.target.value as string);
     };
+
+    const handleDelete = (itemId: number) => {
+        let tempDuplicate = [...showData]
+        let newShowData = tempDuplicate.filter((eachData: any) => eachData.id !== itemId)
+        setShowData(newShowData)
+
+        let tempDuplicateDefaultData = [...defaultData]
+        let newDefaultData = tempDuplicateDefaultData.filter((eachData: any) => eachData.id !== itemId)
+        setDefaultData(newDefaultData)
+
+        setOpenSnackbar(true);
+    }
 
     return (
         <LayoutHome>
@@ -141,7 +178,7 @@ const Products = () => {
                                                 </CardContent>
                                                 <CardActions>
                                                     <Button size="small">Add to cart</Button>
-                                                    <Button size="small">Delete</Button>
+                                                    <Button size="small" onClick={() => handleDelete(eachData.id)}>Delete</Button>
                                                 </CardActions>
                                             </Card>
                                         </Grid>
@@ -154,6 +191,13 @@ const Products = () => {
                         <Pagination count={countPage} page={page} onChange={getItemsForPage} />
                     </div>
                 </Suspense>
+                <Snackbar
+                    open={openSnackbar}
+                    autoHideDuration={6000}
+                    onClose={handleClose}
+                    message="Delete Success"
+                    action={action}
+                />
             </main>
         </LayoutHome>
     )
