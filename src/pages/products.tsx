@@ -28,6 +28,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Snackbar from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import ProductCard from "@/components/molecules/ProductCard";
 
 const Products = () => {
     const [productsData, setProductsData] = useState([])
@@ -167,25 +168,7 @@ const Products = () => {
                                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                                     {showData.map((eachData: any, index) => (
                                         <Grid item xs={2} sm={4} md={4} mt={4} key={index}>
-                                            <Card sx={{ maxWidth: 345 }}>
-                                                <CardMedia
-                                                    sx={{ height: 140 }}
-                                                    image={eachData.image}
-                                                    title={eachData.title}
-                                                />
-                                                <CardContent>
-                                                    <Typography gutterBottom variant="h5" component="div">
-                                                        {eachData.title}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary">
-                                                        {eachData.description}
-                                                    </Typography>
-                                                </CardContent>
-                                                <CardActions>
-                                                    <Button size="small">Add to cart</Button>
-                                                    <Button size="small" onClick={() => handleDelete(eachData.id)}>Delete</Button>
-                                                </CardActions>
-                                            </Card>
+                                            <ProductCard data={eachData} handleDelete={handleDelete} />
                                         </Grid>
                                     ))}
                                 </Grid>

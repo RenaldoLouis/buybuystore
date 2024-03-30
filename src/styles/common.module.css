@@ -6,6 +6,10 @@
     margin-top: 16px;
 }
 
+.marginY16 {
+    margin: 16px 0px 16px 0px
+}
+
 .flexContentCenter {
     display: flex;
     justify-content: center;

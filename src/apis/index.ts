@@ -65,4 +65,8 @@ export const categories = {
   getAllCategories: () => getRequest('/products/categories'),
 };
 
+export const cart = {
+  getAllCarts: () => getRequest('/carts'),
+};
+
 
