@@ -8,6 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Box from '@mui/material/Box';
@@ -38,15 +39,13 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-const AddCartDialog = (props: { handleClose: any; open: any; productsData: any; setNewProductList: any; newProductList: any, setProductDate: any, productDate: any, handleClosAddCartModalAndAddNewCart: any }) => {
+const AddCartDialog = (props: { handleClose: any; open: any; productsData: any; setNewProductList: any; newProductList: any, setProductDate: any, productDate: any, handleClosAddCartModalAndAddNewCart: any, setProductsData: any }) => {
     const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
 
-    const { handleClose, open, productsData, setNewProductList, newProductList, setProductDate, productDate, handleClosAddCartModalAndAddNewCart } = props
-    const [product, seProduct] = useState('');
+    const { handleClose, open, productsData, setNewProductList, newProductList, setProductDate, productDate, handleClosAddCartModalAndAddNewCart, setProductsData } = props
 
     const handleChangeSelect = (event: SelectChangeEvent, index: number) => {
-        seProduct(event.target.value as string);
-        let selectedProduct = productsData.filter((item: any) => (item.title === event.target.value))
+        const selectedProduct = productsData.filter((item: any) => (item.title === event.target.value))
         newProductList[index].productId = selectedProduct[0].id
     };
 
@@ -63,7 +62,7 @@ const AddCartDialog = (props: { handleClose: any; open: any; productsData: any; 
     const handleAddNewProduct = () => {
         let currentNewProductList = [...newProductList]
         let newTempNewProduct = {
-            productId: 5,
+            productId: 0,
             quantity: 1
         }
 
@@ -102,7 +101,7 @@ const AddCartDialog = (props: { handleClose: any; open: any; productsData: any; 
                     ref={descriptionElementRef}
                     tabIndex={-1}
                 >
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
                         <DatePicker value={productDate} onChange={(newValue) => handleChangeDate(newValue)} />
                     </LocalizationProvider>
                     <Box sx={{ minWidth: 120 }} className={commonStyles.marginY16}>

@@ -3,7 +3,7 @@ import commonStyles from "@/styles/common.module.css";
 
 import Input from '@mui/joy/Input';
 
-const NumberInputCounter = (props) => {
+const NumberInputCounter = (props: any) => {
   const { newProductList, index } = props
   const inputRef = useRef<HTMLInputElement | null>(null);
 

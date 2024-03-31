@@ -76,7 +76,7 @@ const PopupDialog = (props: { handleClose: any; open: any; data: any; }) => {
             </DialogContent>
             <DialogActions>
                 <Button autoFocus onClick={handleClose}>
-                    Save changes
+                    Close
                 </Button>
             </DialogActions>
         </BootstrapDialog>
