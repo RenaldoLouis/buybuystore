@@ -68,6 +68,7 @@ export const categories = {
 
 export const cart = {
   getAllCarts: () => getRequest('/carts'),
+  addNewCart: (payload: any) => postRequest('/carts', payload),
   getCartByDateRange: (startDate: any, endDate: any) => getRequest(`/carts?startdate=${startDate}&enddate=${endDate}`),
 };
 

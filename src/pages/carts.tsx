@@ -114,10 +114,16 @@ const Carts = () => {
         tempCartsData.splice(0, 0, dataObject)
         setCartsData(tempCartsData)
 
-
-        setOpenSnackbar(true);
-        handleCloseAddCartModal();
-        getAllProducts();
+        cart.addNewCart(dataObject).then((res) => {
+            if (res.status === 200) {
+                setOpenSnackbar(true);
+                handleCloseAddCartModal();
+                getAllProducts();
+            } else {
+                setSnackbarText("Failed to Add New Cart")
+                setOpenSnackbar(true);
+            }
+        })
     };
 
     const handleClickOpenAddCartModal = () => {
