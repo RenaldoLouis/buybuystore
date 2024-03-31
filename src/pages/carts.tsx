@@ -1,7 +1,7 @@
 "use client"
 
 import "@/app/globals.css";
-import { Suspense, useEffect, useState } from "react";
+import { SetStateAction, Suspense, useEffect, useState } from "react";
 import styles from "@/styles/cart.module.css";
 import withAuthCustom from "@/utils/withAuthCustom";
 import LayoutHome from "@/components/atom/layout";
@@ -11,13 +11,14 @@ import Button from '@mui/material/Button';
 import commonStyles from "@/styles/common.module.css";
 import { TuiDateRangePicker } from "nextjs-tui-date-range-picker";
 import moment from "moment";
-
+import AddCartDialog from "@/components/molecules/AddCartDialog";
 
 const Carts = () => {
     const [productsData, setProductsData] = useState([])
     const [cartsData, setCartsData] = useState([])
     const [startDate, setStartDate] = useState(new Date('2020-01-01'))
     const [endDate, setEndDate] = useState(new Date('2020-05-01'))
+    const [openAddCartModal, setOpenAddCartModal] = useState(false);
 
     const options = {
         language: 'en',
@@ -32,7 +33,8 @@ const Carts = () => {
 
     useEffect(() => {
         getAllProducts();
-        cart.getAllCarts().then((res) => {
+        cart.getAllCarts().then((res: { data: SetStateAction<never[]>; }) => {
+            console.log("cartsData", res.data)
             setCartsData(res.data)
         })
     }, [])
@@ -49,6 +51,16 @@ const Carts = () => {
         })
     }
 
+
+
+    const handleCloseAddCartModal = () => {
+        setOpenAddCartModal(false);
+    };
+
+    const handleClickOpenAddCartModal = () => {
+        setOpenAddCartModal(true);
+    };
+
     return (
         <LayoutHome>
             <main
@@ -56,7 +68,7 @@ const Carts = () => {
             >
                 <Suspense fallback={<div>Loading...</div>}>
                     <div className={commonStyles.flex} >
-                        <Button className={commonStyles.marginY16} variant="contained">
+                        <Button className={commonStyles.marginY16} variant="contained" onClick={handleClickOpenAddCartModal}>
                             Add Cart
                         </Button>
                         <div >
@@ -71,6 +83,7 @@ const Carts = () => {
                         </div>
                     </div>
                     <CartTable data={cartsData} productsData={productsData} />
+                    <AddCartDialog handleClose={handleCloseAddCartModal} open={openAddCartModal} productsData={productsData} />
                 </Suspense>
             </main>
         </LayoutHome>

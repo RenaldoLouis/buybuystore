@@ -27,9 +27,12 @@ const CartTable = (props: { data: any, productsData: any }) => {
     }, [data])
 
     const handleOpenDialogWithData = (selectedData: any) => {
-        let newTempProductData: any[] | ((prevState: never[]) => never[]) = []
-        selectedData.products.forEach((eachData: { productId: any; }) => {
+        let newTempProductData: any[] = []
+        selectedData.products.forEach((eachData: {
+            quantity: any; productId: any;
+        }) => {
             let tempData = productsData.filter((product: { id: any; }) => product.id === eachData.productId)
+            tempData[0].quantity = eachData.quantity
             newTempProductData.push(tempData[0]);
         })
         setCardData(newTempProductData)

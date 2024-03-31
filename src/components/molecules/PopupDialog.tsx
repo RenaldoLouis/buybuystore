@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 
+import ProductCard from "./ProductCard";
+import commonStyles from "@/styles/common.module.css";
+
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
@@ -10,7 +13,6 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import DialogContentText from '@mui/material/DialogContentText';
-import ProductCard from "./ProductCard";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -63,7 +65,12 @@ const PopupDialog = (props: { handleClose: any; open: any; data: any; }) => {
                     tabIndex={-1}
                 >
                     {data.map((eachData: any, index: React.Key | null | undefined) => (
-                        <ProductCard key={index} data={eachData} isAbleToDelete={false} handleDelete={undefined} />
+                        <>
+                            <ProductCard key={index} data={eachData} isAbleToDelete={false} handleDelete={undefined} />
+                            <div className={commonStyles.marginY16}>
+                                Quantity: {eachData.quantity}
+                            </div>
+                        </>
                     ))}
                 </DialogContentText>
             </DialogContent>
