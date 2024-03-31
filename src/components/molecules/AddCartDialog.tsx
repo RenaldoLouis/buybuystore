@@ -25,6 +25,8 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Typography from '@mui/material/Typography';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
+import dayjs, { Dayjs } from 'dayjs';
+import moment from "moment";
 
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -36,17 +38,16 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-const AddCartDialog = (props: { handleClose: any; open: any; productsData: any; }) => {
+const AddCartDialog = (props: { handleClose: any; open: any; productsData: any; setNewProductList: any; newProductList: any, setProductDate: any, productDate: any, handleClosAddCartModalAndAddNewCart: any }) => {
     const [scroll, setScroll] = useState<DialogProps['scroll']>('paper');
 
-    const { handleClose, open, productsData } = props
-    const [startDate, setStartDate] = useState(new Date());
+    const { handleClose, open, productsData, setNewProductList, newProductList, setProductDate, productDate, handleClosAddCartModalAndAddNewCart } = props
+    const [product, seProduct] = useState('');
 
-    const [age, setAge] = React.useState('');
-
-    const handleChange = (event: SelectChangeEvent) => {
-        console.log("event.target.value ", event.target.value)
-        setAge(event.target.value as string);
+    const handleChangeSelect = (event: SelectChangeEvent, index: number) => {
+        seProduct(event.target.value as string);
+        let selectedProduct = productsData.filter((item: any) => (item.title === event.target.value))
+        newProductList[index].productId = selectedProduct[0].id
     };
 
     const descriptionElementRef = useRef<HTMLElement>(null);
@@ -59,59 +60,22 @@ const AddCartDialog = (props: { handleClose: any; open: any; productsData: any; 
         }
     }, [open]);
 
-    return (
-        // <React.Fragment>
-        //     <Dialog
-        //         open={open}
-        //         onClose={handleClose}
-        //         PaperProps={{
-        //             component: 'form',
-        //             onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-        //                 event.preventDefault();
-        //                 console.log("event.currentTarget", event)
-        //                 const formData = new FormData(event.currentTarget);
-        //                 const formJson = Object.fromEntries((formData as any).entries());
-        //                 // const email = formJson.email;
-        //                 console.log("formJson", formJson);
-        //                 // handleClose();
-        //             },
-        //         }}
-        //     >
-        //         <DialogTitle>Add New Cart</DialogTitle>
-        //         <DialogContent>
-        //             <LocalizationProvider dateAdapter={AdapterDayjs}>
-        //                 <DatePicker />
-        //             </LocalizationProvider>
-        //             <Box sx={{ minWidth: 120 }} className={commonStyles.marginY16}>
-        //                 <FormControl fullWidth>
-        //                     <InputLabel id="demo-simple-select-label">Age</InputLabel>
-        //                     <Select
-        //                         labelId="demo-simple-select-label"
-        //                         id="demo-simple-select"
-        //                         value={age}
-        //                         label="Age"
-        //                         onChange={handleChange}
-        //                     >
-        //                         <MenuItem value={10}>Ten</MenuItem>
-        //                         <MenuItem value={20}>Twenty</MenuItem>
-        //                         <MenuItem value={30}>Thirty</MenuItem>
-        //                     </Select>
-        //                 </FormControl>
-        //                 <NumberInputCounter />
-        //             </Box>
-        //             <Button variant="contained" startIcon={<AddIcon />}>
-        //                 Add Product
-        //             </Button>
-        //         </DialogContent>
-        //         <DialogActions>
-        //             <Button onClick={handleClose}>Cancel</Button>
-        //             <Button
-        //                 type="submit"
-        //             >Subscribe</Button>
-        //         </DialogActions>
-        //     </Dialog>
-        // </React.Fragment>
+    const handleAddNewProduct = () => {
+        let currentNewProductList = [...newProductList]
+        let newTempNewProduct = {
+            productId: 5,
+            quantity: 1
+        }
 
+        currentNewProductList.push(newTempNewProduct)
+        setNewProductList(currentNewProductList)
+    }
+
+    const handleChangeDate = (newDate: any) => {
+        setProductDate(newDate)
+    }
+
+    return (
         <BootstrapDialog
             onClose={handleClose}
             aria-labelledby="customized-dialog-title"
@@ -139,32 +103,39 @@ const AddCartDialog = (props: { handleClose: any; open: any; productsData: any; 
                     tabIndex={-1}
                 >
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker />
+                        <DatePicker value={productDate} onChange={(newValue) => handleChangeDate(newValue)} />
                     </LocalizationProvider>
                     <Box sx={{ minWidth: 120 }} className={commonStyles.marginY16}>
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={age}
-                                label="Age"
-                                onChange={handleChange}
-                            >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <NumberInputCounter />
+                        {newProductList.map((eachNewProduct: any, index: any) => {
+                            let currentData = productsData.filter((item: any) => (item.id === eachNewProduct.id))
+                            return (
+                                <>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label">Product</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={currentData.title}
+                                            label="Product"
+                                            onChange={(e) => handleChangeSelect(e, index)}
+                                        >
+                                            {productsData.map((eachProduct: any) => (
+                                                <MenuItem id={eachProduct.id} key={eachProduct.id} value={eachProduct.title}>{eachProduct.title}</MenuItem>
+                                            ))}
+                                        </Select>
+                                    </FormControl>
+                                    <NumberInputCounter newProductList={newProductList} index={index} />
+                                </>
+                            )
+                        })}
                     </Box>
-                    <Button variant="contained" startIcon={<AddIcon />}>
+                    <Button onClick={handleAddNewProduct} variant="contained" startIcon={<AddIcon />}>
                         Add Product
                     </Button>
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button autoFocus onClick={handleClose}>
+                <Button autoFocus onClick={handleClosAddCartModalAndAddNewCart}>
                     Add Cart
                 </Button>
             </DialogActions>

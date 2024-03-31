@@ -12,6 +12,7 @@ import commonStyles from "@/styles/common.module.css";
 import { TuiDateRangePicker } from "nextjs-tui-date-range-picker";
 import moment from "moment";
 import AddCartDialog from "@/components/molecules/AddCartDialog";
+import dayjs, { Dayjs } from 'dayjs';
 
 const Carts = () => {
     const [productsData, setProductsData] = useState([])
@@ -19,6 +20,13 @@ const Carts = () => {
     const [startDate, setStartDate] = useState(new Date('2020-01-01'))
     const [endDate, setEndDate] = useState(new Date('2020-05-01'))
     const [openAddCartModal, setOpenAddCartModal] = useState(false);
+    const [productDate, setProductDate] = useState<Dayjs | null>(dayjs('2022-04-17'));
+    const [newProductList, setNewProductList] = useState([
+        {
+            productId: 5,
+            quantity: 1
+        }
+    ])
 
     const options = {
         language: 'en',
@@ -55,6 +63,27 @@ const Carts = () => {
 
     const handleCloseAddCartModal = () => {
         setOpenAddCartModal(false);
+        setNewProductList([
+            {
+                productId: 5,
+                quantity: 1
+            }
+        ])
+    };
+
+    const handleClosAddCartModalAndAddNewCart = () => {
+        let dataObject = {
+            id: Math.floor(Math.random() * 100),
+            userId: Math.floor(Math.random() * 100),
+            date: moment(productDate).format("YYY-MM-DD"),
+            products: newProductList
+        }
+
+        let tempCartsData = [...cartsData]
+        tempCartsData.splice(0, 0, dataObject)
+        setCartsData(tempCartsData)
+
+        handleCloseAddCartModal();
     };
 
     const handleClickOpenAddCartModal = () => {
@@ -83,7 +112,7 @@ const Carts = () => {
                         </div>
                     </div>
                     <CartTable data={cartsData} productsData={productsData} />
-                    <AddCartDialog handleClose={handleCloseAddCartModal} open={openAddCartModal} productsData={productsData} />
+                    <AddCartDialog handleClosAddCartModalAndAddNewCart={handleClosAddCartModalAndAddNewCart} productDate={productDate} setProductDate={setProductDate} newProductList={newProductList} setNewProductList={setNewProductList} handleClose={handleCloseAddCartModal} open={openAddCartModal} productsData={productsData} />
                 </Suspense>
             </main>
         </LayoutHome>

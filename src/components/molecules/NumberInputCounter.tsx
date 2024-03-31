@@ -3,12 +3,14 @@ import commonStyles from "@/styles/common.module.css";
 
 import Input from '@mui/joy/Input';
 
-const NumberInputCounter = () => {
-  const [value, setValue] = useState<number | string>(2);
+const NumberInputCounter = (props) => {
+  const { newProductList, index } = props
   const inputRef = useRef<HTMLInputElement | null>(null);
 
+  const [value, setValue] = useState<number | string>(1);
   const handleChange = (newValue: any) => {
     setValue(newValue.target.value);
+    newProductList[index].quantity = parseInt(newValue.target.value);
   };
 
   return (
