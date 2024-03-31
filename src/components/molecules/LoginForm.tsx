@@ -15,6 +15,18 @@ import { auth } from '@/apis';
 import http from '@/services/http';
 import LoadingButton from '@mui/lab/LoadingButton';
 
+
+import Box from '@mui/material/Box';
+import Input from '@mui/material/Input';
+import FilledInput from '@mui/material/FilledInput';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+
 const LoginForm = () => {
     const router = useRouter();
 
@@ -23,6 +35,14 @@ const LoginForm = () => {
     const [error, setError] = useState("");
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
 
     useEffect(() => {
         const token = http.getAuthToken();
@@ -61,6 +81,12 @@ const LoginForm = () => {
         setError("");
     }
     const handleSubmit = async (e: any) => {
+
+        if (email.length < 8 || password.length < 8) {
+            setError("Email or Password Length must be more than 8");
+            return;
+        }
+
         setIsLoading(true)
         setError("")
         e.preventDefault();
@@ -84,19 +110,45 @@ const LoginForm = () => {
                 }
             })
             .catch(e => console.error(e))
+
     }
 
     return (
         <form
-            onSubmit={handleSubmit}
+            // onSubmit={handleSubmit}
             className={styles.container}>
             <TextField
                 required
                 id="outlined-basic" label="Email" variant="outlined" value={email} onChange={handleEmailChange} />
-            <TextField
-                required
-                className={commonStyles.marginTop30} id="outlined-basic" label="Password" variant="outlined" value={password} onChange={handlePasswordChange} />
-            <LoadingButton className={commonStyles.marginTop30} type="submit" variant="contained" loading={isLoading}>
+
+            <FormControl className={commonStyles.marginTop30} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                <OutlinedInput
+                    required
+                    value={password}
+                    onChange={handlePasswordChange}
+                    id="outlined-adornment-password"
+                    type={showPassword ? 'text' : 'password'}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge="end"
+                            >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                        </InputAdornment>
+                    }
+                    label="Password"
+                />
+            </FormControl>
+
+            <LoadingButton className={commonStyles.marginTop30}
+                // type="submit"
+                onClick={handleSubmit}
+                variant="contained" loading={isLoading}>
                 Login
             </LoadingButton>
             <Snackbar

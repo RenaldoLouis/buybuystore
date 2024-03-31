@@ -2,6 +2,10 @@
     margin-top: 30px;
 }
 
+.marginLeft16 {
+    margin-left: 16px;
+}
+
 .marginTop16 {
     margin-top: 16px;
 }
@@ -17,6 +21,11 @@
 .flexContentCenter {
     display: flex;
     justify-content: center;
+}
+
+.flexItemCenter {
+    display: flex;
+    align-items: center;
 }
 
 .pageContainer {

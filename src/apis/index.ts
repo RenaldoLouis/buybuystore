@@ -44,9 +44,9 @@ const patchRequest = async (path: string, payload: any): Promise<any> => {
   }
 };
 
-const deleteRequest = async (path: string): Promise<any> => {
+const deleteRequest = async (path: string, payload?: any): Promise<any> => {
   try {
-    return await http.delete(path);
+    return await http.delete(path, payload);
   } catch (err) {
     return handleErrors(err);
   }
@@ -59,6 +59,7 @@ export const auth = {
 export const product = {
   getAllProducts: () => getRequest('/products'),
   getProductByCategory: (category: string) => getRequest(`/products/category/${category}`),
+  deleteProductById: (itemId: any) => deleteRequest(`/products/${itemId}`),
 };
 
 export const categories = {

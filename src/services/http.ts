@@ -110,17 +110,11 @@ class HTTPService {
     return this.axiosInstance?.put(urlPath, payload);
   }
 
-  delete(
-    urlPath: string,
-    payload: Record<string, any> | null = null,
-    params: Record<string, any> | null = null
-  ) {
-    const config: AxiosRequestConfig = {
-      data: payload,
-      params: params
-    };
-
-    return this.axiosInstance?.delete(urlPath, config);
+  delete(urlPath: string, params: Record<string, any> | null = null) {
+    if (params) {
+      return this.axiosInstance?.delete(urlPath, { params });
+    }
+    return this.axiosInstance?.delete(urlPath);
   }
 }
 

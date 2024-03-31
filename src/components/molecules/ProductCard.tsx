@@ -37,7 +37,7 @@ const ProductCard = (props: { data: any; handleDelete: any; isAbleToDelete: bool
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small">Add to cart</Button>
+                {/* <Button size="small">Add to cart</Button> */}
                 {isAbleToDelete && (
                     <Button size="small" onClick={() => handleDelete(data.id)}>Delete</Button>
                 )}

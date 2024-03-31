@@ -26,7 +26,7 @@ const Navbar = () => {
         setOpen(false);
         setTimeout(() => {
             router.push(`/${path.toLowerCase()}`)
-        }, 150);
+        }, 100);
     }
 
     const handleLogout = () => {

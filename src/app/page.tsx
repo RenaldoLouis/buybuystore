@@ -20,7 +20,7 @@ const Login = () => {
           src="/login.jpg"
           width={500}
           height={500}
-          alt="Picture of the author"
+          alt="Login Image"
         />
       </div>
     </main>

@@ -155,7 +155,8 @@ const Carts = () => {
                         <Button className={commonStyles.marginY16} variant="contained" onClick={handleClickOpenAddCartModal}>
                             Add Cart
                         </Button>
-                        <div >
+                        <div className={`${commonStyles.flexItemCenter} ${commonStyles.marginLeft16}`}>
+                            Filter By Date :
                             <TuiDateRangePicker
                                 handleChange={(e) => handleChangeDate(e)}
                                 options={options}
