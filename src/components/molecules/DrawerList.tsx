@@ -10,6 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 import ListIcon from '@mui/icons-material/List';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import CreateIcon from '@mui/icons-material/Create';
 
 const DrawerList = (props: { handleClickSidebar: any; }) => {
     const { handleClickSidebar } = props
@@ -21,7 +22,11 @@ const DrawerList = (props: { handleClickSidebar: any; }) => {
     {
         text: "Carts",
         icon: <ShoppingCartIcon />
-    }
+    },
+    {
+        text: "Form",
+        icon: <CreateIcon />
+    },
     ]
 
     return (

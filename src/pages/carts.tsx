@@ -153,37 +153,33 @@ const Carts = () => {
 
     return (
         <LayoutHome>
-            <main
-                className={styles.homeContainer}
-            >
-                <Suspense fallback={<div>Loading...</div>}>
-                    <div className={commonStyles.flex} >
-                        <Button className={commonStyles.marginY16} variant="contained" onClick={handleClickOpenAddCartModal}>
-                            Add Cart
-                        </Button>
-                        <div className={`${commonStyles.flexItemCenter} ${commonStyles.marginLeft16}`}>
-                            Filter By Date :
-                            <TuiDateRangePicker
-                                handleChange={(e) => handleChangeDate(e)}
-                                options={options}
-                                inputWidth={80}
-                                containerWidth={200}
-                                startpickerDate={startDate}
-                                endpickerDate={endDate}
-                            />
-                        </div>
+            <Suspense fallback={<div>Loading...</div>}>
+                <div className={commonStyles.flex} >
+                    <Button className={commonStyles.marginY16} variant="contained" onClick={handleClickOpenAddCartModal}>
+                        Add Cart
+                    </Button>
+                    <div className={`${commonStyles.flexItemCenter} ${commonStyles.marginLeft16}`}>
+                        Filter By Date :
+                        <TuiDateRangePicker
+                            handleChange={(e) => handleChangeDate(e)}
+                            options={options}
+                            inputWidth={80}
+                            containerWidth={200}
+                            startpickerDate={startDate}
+                            endpickerDate={endDate}
+                        />
                     </div>
-                    <CartTable data={cartsData} productsData={productsData} />
-                    <AddCartDialog handleClosAddCartModalAndAddNewCart={handleClosAddCartModalAndAddNewCart} productDate={productDate} setProductDate={setProductDate} newProductList={newProductList} setNewProductList={setNewProductList} handleClose={handleCloseAddCartModal} open={openAddCartModal} productsData={productsData} setProductsData={setProductsData} />
-                </Suspense>
-                <Snackbar
-                    open={openSnackbar}
-                    autoHideDuration={6000}
-                    onClose={handleCloseSnackbar}
-                    message={snackbarText}
-                    action={action}
-                />
-            </main>
+                </div>
+                <CartTable data={cartsData} productsData={productsData} />
+                <AddCartDialog handleClosAddCartModalAndAddNewCart={handleClosAddCartModalAndAddNewCart} productDate={productDate} setProductDate={setProductDate} newProductList={newProductList} setNewProductList={setNewProductList} handleClose={handleCloseAddCartModal} open={openAddCartModal} productsData={productsData} setProductsData={setProductsData} />
+            </Suspense>
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                message={snackbarText}
+                action={action}
+            />
         </LayoutHome>
     )
 }

@@ -144,73 +144,69 @@ const Products = () => {
 
     return (
         <LayoutHome>
-            <main
-                className={styles.homeContainer}
-            >
-                <Suspense fallback={
-                    <div className={`${commonStyles.flexContentCenter} ${commonStyles.fullWidth}`} style={{ height: 300 }}>
-                        <Button loading variant="plain">
-                            Plain
-                        </Button>
-                    </div>}>
-                    <Box sx={{ minWidth: 120 }}>
-                        <FormControl className={`${commonStyles.marginTop16}`} style={{ width: 200 }}>
-                            <InputLabel id="demo-simple-select-label">Category</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={selectedCategoryFilter}
-                                label="Category"
-                                onChange={handleChange}
-                            >
-                                {categoryList.map((eachCategory) => (
-                                    <MenuItem key={eachCategory} value={eachCategory}>{eachCategory}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Box>
-                    <>
-                        <div >
-                            <Box sx={{ flexGrow: 1 }}>
-                                {isLoading ? (
-                                    <div className={`${commonStyles.flexContentCenter} ${commonStyles.fullWidth}`} style={{ height: 300 }}>
-                                        <Button loading variant="plain">
-                                            Plain
-                                        </Button>
-                                    </div>
+            <Suspense fallback={
+                <div className={`${commonStyles.flexContentCenter} ${commonStyles.fullWidth}`} style={{ height: 300 }}>
+                    <Button loading variant="plain">
+                        Plain
+                    </Button>
+                </div>}>
+                <Box sx={{ minWidth: 120 }}>
+                    <FormControl className={`${commonStyles.marginTop16}`} style={{ width: 200 }}>
+                        <InputLabel id="demo-simple-select-label">Category</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectedCategoryFilter}
+                            label="Category"
+                            onChange={handleChange}
+                        >
+                            {categoryList.map((eachCategory) => (
+                                <MenuItem key={eachCategory} value={eachCategory}>{eachCategory}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Box>
+                <>
+                    <div >
+                        <Box sx={{ flexGrow: 1 }}>
+                            {isLoading ? (
+                                <div className={`${commonStyles.flexContentCenter} ${commonStyles.fullWidth}`} style={{ height: 300 }}>
+                                    <Button loading variant="plain">
+                                        Plain
+                                    </Button>
+                                </div>
 
-                                ) : (
-                                    <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                        {showData.length > 0 ? (
-                                            showData.map((eachData: any, index) => (
-                                                <Grid item xs={2} sm={4} md={4} mt={4} key={index}>
-                                                    <ProductCard data={eachData} handleDelete={handleDelete} isAbleToDelete={true} />
-                                                </Grid>
-                                            ))
-                                        ) : (
-                                            <div className={`${commonStyles.flexContentCenter} ${commonStyles.fullWidth}`} style={{ height: 300 }}>
-                                                <div>
-                                                    No Data To Show
-                                                </div>
+                            ) : (
+                                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                                    {showData.length > 0 ? (
+                                        showData.map((eachData: any, index) => (
+                                            <Grid item xs={2} sm={4} md={4} mt={4} key={index}>
+                                                <ProductCard data={eachData} handleDelete={handleDelete} isAbleToDelete={true} />
+                                            </Grid>
+                                        ))
+                                    ) : (
+                                        <div className={`${commonStyles.flexContentCenter} ${commonStyles.fullWidth}`} style={{ height: 300 }}>
+                                            <div>
+                                                No Data To Show
                                             </div>
-                                        )}
-                                    </Grid>
-                                )}
-                            </Box>
-                        </div>
-                        <div className={`${commonStyles.flexContentCenter} ${commonStyles.marginTop16}`}>
-                            <Pagination count={countPage} page={page} onChange={getItemsForPage} />
-                        </div>
-                    </>
-                </Suspense>
-                <Snackbar
-                    open={openSnackbar}
-                    autoHideDuration={6000}
-                    onClose={handleClose}
-                    message="Delete Success"
-                    action={action}
-                />
-            </main>
+                                        </div>
+                                    )}
+                                </Grid>
+                            )}
+                        </Box>
+                    </div>
+                    <div className={`${commonStyles.flexContentCenter} ${commonStyles.marginTop16}`}>
+                        <Pagination count={countPage} page={page} onChange={getItemsForPage} />
+                    </div>
+                </>
+            </Suspense>
+            <Snackbar
+                open={openSnackbar}
+                autoHideDuration={6000}
+                onClose={handleClose}
+                message="Delete Success"
+                action={action}
+            />
         </LayoutHome>
     )
 }
